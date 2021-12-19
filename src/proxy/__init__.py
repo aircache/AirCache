@@ -3,7 +3,7 @@ from flask import Blueprint, request
 from flask.wrappers import Response
 import requests
 import os
-from utils.storage import config_load_headers
+from utils.storage import storage_option
 from utils.cache import cache_option
 from ..middlewares.scope_validator import scope_check
 from ..middlewares.api_key_validator import x_api_key
@@ -19,7 +19,7 @@ proxy = Blueprint('proxy', __name__)
 @x_api_key
 @scope_check
 def all_routes(text):
-    config_data = config_load_headers(request.headers.get("x-api-key"))
+    config_data = storage_option().config_load_headers(request.headers.get("x-api-key"))
     if(request.method.lower() != "options"):
         target_url = config_data['x-target-aircache']
         try:
