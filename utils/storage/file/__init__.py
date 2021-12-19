@@ -3,7 +3,7 @@ import os
 import re
 from flask import  request
 
-from utils.cache import create_key, exist_key, get_key
+from utils.cache import cache_option
 
 exp_conf = os.environ.get('EXP_CONF', 10)
 
@@ -34,8 +34,8 @@ def is_scoped(api_key, path):
 
 def get_data_from_file(x_api_key):
     redis_key = x_api_key
-    if(exist_key(redis_key)):
-        return json.loads(get_key(redis_key))
+    if(cache_option().exist_key(redis_key)):
+        return json.loads(cache_option().get_key(redis_key))
     else:
         # Opening JSON file
         f = open('./conf/api.json')
@@ -44,5 +44,5 @@ def get_data_from_file(x_api_key):
         data = json.load(f)
         # Closing file
         f.close()
-        create_key(redis_key, data, exp_conf)
+        cache_option().create_key(redis_key, data, exp_conf)
         return data

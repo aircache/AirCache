@@ -17,10 +17,10 @@ elif redis_type == 'url':
 # ------------------------------
 # Functions
 # Bake redis key from url params
-def redis_key_params(request):
+def redis_key_params(request) -> str:
     return '.'.join(str(e) for e in request.args.keys())
 # Create new redis key
-def create_key(redis_key, val, exp):
+def create_key(redis_key, val, exp) -> None:
     r_connection.setex(redis_key, int(exp), json.dumps(val))
 # Get value of key
 def get_key(redis_key):
