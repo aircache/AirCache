@@ -3,10 +3,10 @@ from flask import Blueprint, request
 from flask.wrappers import Response
 import requests
 import os
-from middlewares.scope_validator import scope_check
 from utils.storage import config_load_headers
-from utils.cache.redis import redis_key_params, create_key, get_key, exist_key
-from middlewares.api_key_validator import x_api_key
+from utils.cache import key_params, create_key, get_key, exist_key
+from ..middlewares.scope_validator import scope_check
+from ..middlewares.api_key_validator import x_api_key
 import json
 from flask_cors import cross_origin
 # ------------------------------
@@ -23,7 +23,7 @@ def all_routes(text):
     if(request.method.lower() != "options"):
         target_url = config_data['x-target-aircache']
         try:
-            redis_key = request.method.lower() + "_"+ request.headers.get("x-api-key") + "_"+ text + "_"+redis_key_params(request)
+            redis_key = request.method.lower() + "_"+ request.headers.get("x-api-key") + "_"+ text + "_"+key_params(request)
             if(exist_key(redis_key+"_content")):
                 content_val = get_key(redis_key+"_content")
                 method_val = get_key(redis_key+"_method")

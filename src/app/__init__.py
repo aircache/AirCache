@@ -1,6 +1,5 @@
 import os
 from flask import Flask
-from utils.cache.redis import r_connection
 
 config = {
     "DEBUG": os.getenv('DEBUG', 'development'),

@@ -3,7 +3,7 @@ import os
 import re
 from flask import  request
 
-from utils.cache.redis import create_key, exist_key, get_key
+from utils.cache import create_key, exist_key, get_key
 
 exp_conf = os.environ.get('EXP_CONF', 10)
 
@@ -22,6 +22,7 @@ def is_scoped(api_key, path):
     correct_scope = False
     if(has_api(api_key)):
         for scope in data[api_key]["scopes"]:
+            print(scope)
             scope_ops = scope.split(" ")
             if(len(scope_ops) > 1):
                 if re.search(scope_ops[1], path) and request.method.lower() == scope_ops[0].lower(): correct_scope = True
@@ -37,7 +38,7 @@ def get_data_from_file(x_api_key):
         return json.loads(get_key(redis_key))
     else:
         # Opening JSON file
-        f = open('./data/api.json')
+        f = open('./conf/api.json')
         # returns JSON object as
         # a dictionary
         data = json.load(f)
