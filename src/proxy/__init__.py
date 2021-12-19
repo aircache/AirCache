@@ -3,10 +3,10 @@ from flask import Blueprint, request
 from flask.wrappers import Response
 import requests
 import os
-from middlewares.scope_validator import scope_check
-from utils.storage import config_load_headers
-from utils.cache.redis import redis_key_params, create_key, get_key, exist_key
-from middlewares.api_key_validator import x_api_key
+from utils.storage import storage_option
+from utils.cache import cache_option
+from ..middlewares.scope_validator import scope_check
+from ..middlewares.api_key_validator import x_api_key
 import json
 from flask_cors import cross_origin
 # ------------------------------
@@ -19,15 +19,15 @@ proxy = Blueprint('proxy', __name__)
 @x_api_key
 @scope_check
 def all_routes(text):
-    config_data = config_load_headers(request.headers.get("x-api-key"))
+    config_data = storage_option().config_load_headers(request.headers.get("x-api-key"))
     if(request.method.lower() != "options"):
         target_url = config_data['x-target-aircache']
         try:
-            redis_key = request.method.lower() + "_"+ request.headers.get("x-api-key") + "_"+ text + "_"+redis_key_params(request)
-            if(exist_key(redis_key+"_content")):
-                content_val = get_key(redis_key+"_content")
-                method_val = get_key(redis_key+"_method")
-                headers_val = get_key(redis_key+"_header")
+            redis_key = request.method.lower() + "_"+ request.headers.get("x-api-key") + "_"+ text + "_"+cache_option().key_params(request)
+            if(cache_option().exist_key(redis_key+"_content")):
+                content_val = cache_option().get_key(redis_key+"_content")
+                method_val = cache_option().get_key(redis_key+"_method")
+                headers_val = cache_option().get_key(redis_key+"_header")
                 headers_list = headers_val[2:-2].split("], [")
                 response = Response(json.loads(content_val), method_val)
                 for header_obj in headers_list:
@@ -47,14 +47,13 @@ def all_routes(text):
                             for method_item in method_options:
                                 if(method_item.replace(" ", "").lower() == request.method.lower()): is_cachable = True
                             if(is_cachable):
-                                create_key(redis_key+"_content", result.content.decode('utf-8'), expiry_val)
-                                create_key(redis_key+"_header", headers, expiry_val)
-                                create_key(redis_key+"_method", result.status_code, expiry_val)
+                                cache_option().create_key(redis_key+"_content", result.content.decode('utf-8'), expiry_val)
+                                cache_option().create_key(redis_key+"_header", headers, expiry_val)
+                                cache_option().create_key(redis_key+"_method", result.status_code, expiry_val)
                         else:
-                            create_key(redis_key+"_content", result.content.decode('utf-8'), expiry_val)
-                            create_key(redis_key+"_header", headers, expiry_val)
-                            create_key(redis_key+"_method", result.status_code, expiry_val)
-
+                            cache_option().create_key(redis_key+"_content", result.content.decode('utf-8'), expiry_val)
+                            cache_option().create_key(redis_key+"_header", headers, expiry_val)
+                            cache_option().create_key(redis_key+"_method", result.status_code, expiry_val)
                 response = Response(result.content, result.status_code, headers)
             return response
         except Exception:
