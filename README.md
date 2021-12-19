@@ -48,4 +48,4 @@ For purposes of the foregoing, "Sell" means practicing any or all of the rights 
 **Software:** AirCache<br/>
 **License:** Apache 2.0 with Commons Clause<br/>
 **Licensor:** Mehdi Roshan Fekr<br/>
-[Please find further information on the license page](license)
+[Please find further information on the license page](LICENSE.md)
