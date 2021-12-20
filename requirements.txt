@@ -6,4 +6,6 @@ requests==2.26.0
 six==1.16.0
 urllib3==1.26.5
 Werkzeug==2.0.1
+pylint==2.12.2
 Flask_Cors==3.0.10
+autopep8==1.6.0
