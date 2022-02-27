@@ -8,10 +8,7 @@ config = {
 }
 
 
-def create_app():
-    """Construct the core application."""
-    app = Flask(__name__)
-    app.config.from_mapping(config)
-    with app.app_context():
-        from . import routes  # Import routes
-        return app
+app = Flask(__name__)
+app.config.from_mapping(config)
+with app.app_context():
+    from . import routes  # Import routes

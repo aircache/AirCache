@@ -1,0 +1,29 @@
+{
+  "preview-only-version": {
+    "head_key": ["Authorization"],
+    "head_value": ["Bearer ${API_KEY}"],
+    "scopes": ["GET /.*"],
+    "x-api-cache": "true",
+    "x-api-cache-options": "GET, POST, PUT",
+    "x-api-exp": "5",
+    "x-target-aircache": "https://api.airtable.com"
+  },
+  "create-view-version": {
+    "headers": [
+      {
+        "key": "Authorization",
+        "value": "Bearer  ${API_KEY}"
+      }
+    ],
+    "head_key": ["Authorization"],
+    "head_value": ["Bearer  ${API_KEY}"],
+    "scopes": [
+      "GET /v0/appOoDyFnb33wnRVw/.*?maxRecords=.*&view=[^&]*$",
+      "POST /v0/appOoDyFnb33wnRVw/.*?maxRecords=.*&view=[^&]*$"
+    ],
+    "x-api-cache": "true",
+    "x-api-cache-options": "GET, POST, PUT",
+    "x-api-exp": "5",
+    "x-target-aircache": "https://api.airtable.com"
+  }
+}
