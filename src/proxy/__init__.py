@@ -81,7 +81,7 @@ def make_request(target_url, config_data):
     final_headers = {**copy, **object_dict}
     response = requests.request(
         method=request.method,
-        url=request.url.replace(os.getenv('HOST'), target_url),
+        url=request.url.replace(os.getenv('HOST', "http://127.0.0.1:5000"), target_url),
         headers=final_headers,
         data=request.get_data(),
         allow_redirects=False)
