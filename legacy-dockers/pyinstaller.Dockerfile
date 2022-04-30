@@ -17,5 +17,3 @@ ENV CACHE_OPTION="memory"
 ENV EXP_CONF="10"
 
 EXPOSE 5000
-
-CMD [ "./run" ]
