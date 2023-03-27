@@ -1,7 +1,7 @@
 cryptography==3.4.7
 Flask==2.0.1
 python-dotenv==0.19.0
-redis==3.5.3
+redis==4.5.3
 requests==2.26.0
 six==1.16.0
 urllib3==1.26.5
